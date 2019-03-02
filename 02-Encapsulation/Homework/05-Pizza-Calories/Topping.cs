@@ -4,20 +4,17 @@ using System.Text;
 
 public class Topping
 {
-    private const int BaseCaloriesPerGram = 2;
-    private const int MinGrams = 1;
-    private const int MaxGrams = 50;
+    private const double BaseCaloriesModifier = 2;
+
+    private Dictionary<string, double> validTypes;
 
     private string type;
-    private double weight;
-    private double caloriesModifier;
 
-    private string Type
-    {
+    public string Type {
         get => type;
-        set
+        private set
         {
-            if (value != "Meat" && value != "Veggies" && value != "Cheese" && value != "Sauce")
+            if (!validTypes.ContainsKey(value.ToLower()))
             {
                 throw new ArgumentException($"Cannot place {value} on top of your pizza.");
             }
@@ -26,44 +23,43 @@ public class Topping
         }
     }
 
-    public double Weight
-    {
+    private double weight;
+
+    public double Weight {
         get => weight;
         private set
         {
-            if (value < MinGrams || value > MaxGrams)
+            if (value < 1 || value > 50)
             {
-                throw new ArgumentException($"{Type} weight should be in the range[{MinGrams}..{MaxGrams}].");
+                throw new ArgumentException($"{Type} weight should be in the range [1..50].");
             }
 
             weight = value;
         }
     }
 
-    public double CaloriesPerGram
-    {
-        get => caloriesModifier * BaseCaloriesPerGram;
-    }
+    public double Calories => CalculateCalories();
 
     public Topping(string type, double weight)
     {
+        validTypes = new Dictionary<string, double>();
+        SeedTypes();
+
         Type = type;
         Weight = weight;
+    }
 
-        switch (type)
-        {
-            case "Meat":
-                caloriesModifier = 1.2;
-                break;
-            case "Veggies":
-                caloriesModifier = 0.8;
-                break;
-            case "Cheese":
-                caloriesModifier = 1.1;
-                break;
-            case "Sauce":
-                caloriesModifier = 0.9;
-                break;
-        }
+    private void SeedTypes()
+    {
+        validTypes.Add("meat", 1.2);
+        validTypes.Add("veggies", 0.8);
+        validTypes.Add("cheese", 1.1);
+        validTypes.Add("sauce", 0.9);
+    }
+
+    private double CalculateCalories()
+    {
+        return BaseCaloriesModifier * Weight * validTypes[Type.ToLower()];
     }
 }
+

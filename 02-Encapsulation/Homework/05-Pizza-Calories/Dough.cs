@@ -2,26 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 
-
 public class Dough
 {
+    private const double BaseCaloriesModifier = 2;
 
-    private const int BaseCaloriesPerGram = 2;
-    private const int MinGrams = 1;
-    private const int MaxGrams = 200;
+    private Dictionary<string, double> validFlourTypes;
+    private Dictionary<string, double> validBakingTechniques;
 
     private string flourType;
-    private string bakingTechnique;
-    private double weight;
-    private double flourCaloriesModifier;
-    private double bakingCaloriesModifier;
 
-    private double caloriesPerGram;
-
-    private string FlourType {
-        get => flourType;
-        set {
-            if (value != "White" && value != "Wholegrain")
+    public string FlourType {
+        get => flourType; 
+        private set
+        {
+            if (!validFlourTypes.ContainsKey(value.ToLower()))
             {
                 throw new ArgumentException("Invalid type of dough.");
             }
@@ -30,10 +24,14 @@ public class Dough
         }
     }
 
-    private string BakingTechnique {
+    private string bakingTechnique;
+
+    public string BakingTechnique
+    {
         get => bakingTechnique;
-        set {
-            if (value != "Chewy" && value != "Crispy" && value != "Homemade")
+        private set
+        {
+            if (!validBakingTechniques.ContainsKey(value.ToLower()))
             {
                 throw new ArgumentException("Invalid type of dough.");
             }
@@ -42,51 +40,51 @@ public class Dough
         }
     }
 
+    private double weight;
+
     public double Weight {
         get => weight;
-        private set {
-            if (value < MinGrams || value > MaxGrams)
+        private set
+        {
+            if (value < 1 || value > 200)
             {
-                throw new ArgumentException($"Dough weight should be in the range [{MinGrams}..{MaxGrams}].");
+                throw new ArgumentException("Dough weight should be in the range [1..200].");
             }
 
             weight = value;
         }
     }
 
-    public double CaloriesPerGram {
-        get => BaseCaloriesPerGram * flourCaloriesModifier * bakingCaloriesModifier;
+    public double Calories => CalculateCalories();
 
+    public Dough(string flourType, string bakingTechnique, double weight)
+    {
+        validFlourTypes = new Dictionary<string, double>();
+        validBakingTechniques = new Dictionary<string, double>();
+        SeedFlourTypes();
+        SeedBakingTechniques();
+
+        FlourType = flourType;
+        BakingTechnique = bakingTechnique;
+        Weight = weight;
     }
 
-    public Dough(string type, string technique, double weight)
+    private void SeedFlourTypes()
     {
-        FlourType = type;
-        BakingTechnique = technique;
-        Weight = weight;
+        validFlourTypes.Add("white", 1.5);
+        validFlourTypes.Add("wholegrain", 1.0);
+    }
 
-        switch (type)
-        {
-            case "White":
-                flourCaloriesModifier = 1.5;
-                break;
-            case "Wholegrain":
-                flourCaloriesModifier = 1.0;
-                break;
-        }
+    private void SeedBakingTechniques()
+    {
+        validBakingTechniques.Add("crispy", 0.9);
+        validBakingTechniques.Add("chewy", 1.1);
+        validBakingTechniques.Add("homemade", 1.0);
+    }
 
-        switch (technique)
-        {
-            case "Chewy":
-                bakingCaloriesModifier = 1.1;
-                break;
-            case "Crispy":
-                bakingCaloriesModifier = 0.9;
-                break;
-            case "Homemade":
-                bakingCaloriesModifier = 1.0;
-                break;
-        }
-
+    private double CalculateCalories()
+    {
+        return Weight * BaseCaloriesModifier * validFlourTypes[FlourType.ToLower()] * validBakingTechniques[BakingTechnique.ToLower()];
     }
 }
+

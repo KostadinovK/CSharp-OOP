@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 public class Pizza
 {
     private string name;
-    private Dough dough;
-    private List<Topping> toppings;
 
-    public string Name
-    {
+    public string Name {
         get => name;
-        private set
+        set
         {
-            if (string.IsNullOrEmpty(value) || value.Length > 15)
+            if (value.Length < 1 || value.Length > 15)
             {
                 throw new ArgumentException("Pizza name should be between 1 and 15 symbols.");
             }
@@ -22,55 +20,44 @@ public class Pizza
         }
     }
 
-    public Dough Dough
-    {
-        get => dough;
-        set { dough = value; }
-    }
+    private List<Topping> toppings;
 
-    public int ToppingsNumber
-    {
-        get => toppings.Count;
-    }
+    public Dough Dough { get; private set; }
 
-    public double TotalCalories
-    {
-        get => CalculateCalories();
-    }
+    public int ToppingCount => toppings.Count;
 
-    public Pizza(string name)
+    public double Calories => CalculateCalories();
+
+    public Pizza(string name, Dough dough)
     {
         Name = name;
+        Dough = dough;
         toppings = new List<Topping>();
-    }
-
-    public void AddTopping(Topping t)
-    {
-        toppings.Add(t);
-        if (ToppingsNumber > 10)
-        {
-            throw new ArgumentException("Number of toppings should be in range [0..10].");
-        }
     }
 
     private double CalculateCalories()
     {
-        double doughCaloriesPerGram = dough.CaloriesPerGram;
-        double doughWeight = dough.Weight;
-
-        double toppingsTotalCalories = 0;
-        foreach (var topping in toppings)
+        if (ToppingCount > 0)
         {
-            double weight = topping.Weight;
-            toppingsTotalCalories += topping.CaloriesPerGram * weight;
+            return Dough.Calories + toppings.Select(x => x.Calories).Sum();
         }
 
-        return doughCaloriesPerGram * dough.Weight + toppingsTotalCalories;
+        return Dough.Calories;
+
+    }
+
+    public void AddTopping(Topping t)
+    {
+        if (ToppingCount >= 10)
+        {
+            throw new ArgumentException("Number of toppings should be in range [0..10].");
+        }
+
+        toppings.Add(t);
     }
 
     public override string ToString()
     {
-        return $"{Name} - {TotalCalories:f2} Calories.";
+        return $"{Name} - {Calories:f2} Calories.";
     }
 }
-
