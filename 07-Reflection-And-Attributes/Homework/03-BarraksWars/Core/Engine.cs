@@ -37,38 +37,17 @@
         private string InterpredCommand(string[] data, string commandName)
         {
             string result = string.Empty;
-            switch (commandName)
-            {
-                case "add":
-                    result = this.AddUnitCommand(data);
-                    break;
-                case "report":
-                    result = this.ReportCommand(data);
-                    break;
-                case "fight":
-                    Environment.Exit(0);
-                    break;
-                default:
-                    throw new InvalidOperationException("Invalid command!");
-            }
+            var commandNameArr = commandName.ToLower().ToCharArray();
+            commandNameArr[0] = Char.ToUpper(commandNameArr[0]);
+
+            commandName = string.Join("", commandNameArr) + "Command";
+
+            var commandType = Type.GetType("_03BarracksFactory.Core.Commands." + commandName);
+
+            var command = commandType.GetMethod("Execute");
+            var instance = Activator.CreateInstance(commandType, new object[]{ data, repository, unitFactory});
+            result = (string)command.Invoke(instance, null);
             return result;
-        }
-
-
-        private string ReportCommand(string[] data)
-        {
-            string output = this.repository.Statistics;
-            return output;
-        }
-
-
-        private string AddUnitCommand(string[] data)
-        {
-            string unitType = data[1];
-            IUnit unitToAdd = this.unitFactory.CreateUnit(unitType);
-            this.repository.AddUnit(unitToAdd);
-            string output = unitType + " added!";
-            return output;
         }
     }
 }

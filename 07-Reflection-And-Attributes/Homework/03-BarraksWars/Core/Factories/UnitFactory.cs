@@ -1,4 +1,6 @@
-﻿namespace _03BarracksFactory.Core.Factories
+﻿using _03BarracksFactory.Models.Units;
+
+namespace _03BarracksFactory.Core.Factories
 {
     using System;
     using Contracts;
@@ -7,8 +9,9 @@
     {
         public IUnit CreateUnit(string unitType)
         {
-            //TODO: implement for Problem 3
-            throw new NotImplementedException();
+            var type = Type.GetType("_03BarracksFactory.Models.Units." + unitType);
+
+            return (IUnit)Activator.CreateInstance(type);
         }
     }
 }

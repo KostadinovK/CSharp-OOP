@@ -42,8 +42,17 @@
 
         public void RemoveUnit(string unitType)
         {
-            //TODO: implement for Problem 4
-            throw new NotImplementedException();
+            if (!amountOfUnits.ContainsKey(unitType))
+            {
+                throw new ArgumentException("No such units in repository.");
+            }
+
+            amountOfUnits[unitType]--;
+
+            if (amountOfUnits[unitType] < 0)
+            {
+                amountOfUnits.Remove(unitType);
+            }
         }
     }
 }
