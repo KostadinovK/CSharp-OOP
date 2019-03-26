@@ -1,0 +1,5 @@
+﻿AddHero Elf Kosta
+AddItem BuffArmor
+AddItemToHero BuffArmor Kosta
+AddMonster BloodyWolf
+AttackMonster Kosta BloodyWolf
