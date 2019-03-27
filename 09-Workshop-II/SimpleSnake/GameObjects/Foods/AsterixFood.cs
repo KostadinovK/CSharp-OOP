@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SimpleSnake.Utilities;
 
 namespace SimpleSnake.GameObjects.Foods
 {
     public class AsterixFood : Food
     {
-        private const string Symbol = "*";
-        private const int Points = 1;
 
-        public AsterixFood(Coordinate position) : base(Symbol, Points, position)
+        public AsterixFood(Coordinate position) : base(GameConstants.AsterixFood.Symbol, GameConstants.AsterixFood.Points, position)
         {
 
         }

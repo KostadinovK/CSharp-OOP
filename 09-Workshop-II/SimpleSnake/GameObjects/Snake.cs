@@ -6,36 +6,32 @@ using System.Runtime.InteropServices;
 using System.Text;
 using SimpleSnake.Enums;
 using SimpleSnake.GameObjects.Foods;
+using SimpleSnake.Utilities;
 
 namespace SimpleSnake.GameObjects
 {
     public class Snake
     {
-        private const string symbol = "\u25CF";
-        private const int DefaultLength = 6;
-        private const int DefaultCoordinateX = 5;
-        private const int DefaultCoordinateY = 6;
-
         private List<Coordinate> body;
         public Coordinate Head => body.Last();
         public IReadOnlyCollection<Coordinate> Body => this.body.AsReadOnly();
 
         public Direction Direction { get; set; }
-        public string Symbol => symbol;
+        public string Symbol => GameConstants.Snake.Symbol;
         public int Length { get; private set; }
 
         public Snake()
         {
             body = new List<Coordinate>();
-            Length = DefaultLength;
+            Length = GameConstants.Snake.DefaultLength;
             InitializeBody();
             Direction = Direction.Right;
         }
 
         private void InitializeBody()
         {
-            var coordinateX = DefaultCoordinateX;
-            var coordinateY = DefaultCoordinateY;
+            var coordinateX = GameConstants.Snake.DefaultCoordinateX;
+            var coordinateY = GameConstants.Snake.DefaultCoordinateY;
 
             for (int i = 0; i <= Length; i++)
             {
@@ -78,6 +74,7 @@ namespace SimpleSnake.GameObjects
             {
                 var coordinates = new Coordinate(Head.CoordinateX, Head.CoordinateY);
                 body.Add(CalculateCoords(coordinates));
+                Length++;
             }
         }
     }

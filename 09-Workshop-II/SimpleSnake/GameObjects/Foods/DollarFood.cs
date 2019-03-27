@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SimpleSnake.Utilities;
 
 namespace SimpleSnake.GameObjects.Foods
 {
     public class DollarFood : Food
     {
-        private const string Symbol = "$";
-        private const int Points = 5;
-        public DollarFood(Coordinate position) : base(Symbol, Points, position)
+        public DollarFood(Coordinate position) : base(GameConstants.DollarFood.Symbol, GameConstants.DollarFood.Points, position)
         {
         }
     }

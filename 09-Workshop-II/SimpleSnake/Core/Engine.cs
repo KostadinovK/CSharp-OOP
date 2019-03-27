@@ -9,13 +9,13 @@ using SimpleSnake.Enums;
 using SimpleSnake.Factories;
 using SimpleSnake.GameObjects;
 using SimpleSnake.GameObjects.Foods;
+using SimpleSnake.Utilities;
 
 namespace SimpleSnake.Core
 {
     public class Engine : IEngine
     {
-        private const int ThreadSleepTimeHorizontalMovement = 80;
-        private const int ThreadSleepTimeVerticalMovement = 120;
+       
         public Snake Snake { get; }
 
         public Food Food { get; private set; }
@@ -66,11 +66,11 @@ namespace SimpleSnake.Core
 
                 if (Snake.Direction == Direction.Left || Snake.Direction == Direction.Right)
                 {
-                    Thread.Sleep(ThreadSleepTimeHorizontalMovement);
+                    Thread.Sleep(GameConstants.Engine.ThreadSleepTimeHorizontalMovement);
                 }
                 else
                 {
-                    Thread.Sleep(ThreadSleepTimeVerticalMovement);
+                    Thread.Sleep(GameConstants.Engine.ThreadSleepTimeVerticalMovement);
                 }
             }
         }

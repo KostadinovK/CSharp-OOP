@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SimpleSnake.GameObjects;
+using SimpleSnake.Utilities;
 
 namespace SimpleSnake.Core
 {
@@ -18,7 +19,7 @@ namespace SimpleSnake.Core
         {
             foreach (var coordinate in coordinates)
             {
-                if (symbol == "\u25CF")
+                if (symbol == GameConstants.Snake.Symbol)
                 {
                     lastDrawnElements.Add(new Coordinate(coordinate.CoordinateX, coordinate.CoordinateY));
                 }
