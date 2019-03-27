@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Text;
 using SimpleSnake.Enums;
+using SimpleSnake.GameObjects.Foods;
 
 namespace SimpleSnake.GameObjects
 {
@@ -71,9 +72,13 @@ namespace SimpleSnake.GameObjects
             return head;
         }
 
-        public void Eat()
+        public void Eat(Food food)
         {
-            throw new NotImplementedException();
+            for (int i = 0;i < food.Points;i++)
+            {
+                var coordinates = new Coordinate(Head.CoordinateX, Head.CoordinateY);
+                body.Add(CalculateCoords(coordinates));
+            }
         }
     }
 }

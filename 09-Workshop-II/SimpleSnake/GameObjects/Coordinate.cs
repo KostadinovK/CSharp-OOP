@@ -14,5 +14,11 @@ namespace SimpleSnake.GameObjects
             CoordinateX = coordinateX;
             CoordinateY = coordinateY;
         }
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as Coordinate;
+            return this.CoordinateX == item.CoordinateX && this.CoordinateY == item.CoordinateY;
+        }
     }
 }
