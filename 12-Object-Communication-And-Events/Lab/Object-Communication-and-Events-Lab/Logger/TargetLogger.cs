@@ -7,7 +7,7 @@ public class TargetLogger : Logger
     {
         switch (logType)
         {
-            case LogType.EVENT:
+            case LogType.TARGET:
                 Console.WriteLine($"{logType}: {msg}");
                 break;
         }

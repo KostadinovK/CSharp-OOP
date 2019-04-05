@@ -11,15 +11,20 @@ public class Program
         combatLogger.SetSuccessor(eventLogger);
         eventLogger.SetSuccessor(targetLogger);
 
-        IAttacker warrior = new Warrior("Pesho", 20, combatLogger);
+        IAttackGroup attackGroup = new AttackGroup();
+        attackGroup.AddMember(new Warrior("Pesho", 10, combatLogger));
+        attackGroup.AddMember(new Warrior("Stamat", 20, combatLogger));
+        
         ITarget target = new Dragon("Drago", 30, 200, combatLogger);
 
         IExecutor executor = new CommandExecutor();
-        ICommand targetCommand = new TargetCommand(warrior, target);
-        ICommand attackCommand = new AttackCommand(warrior);
+        ICommand groupTargetCommand = new GroupTargetCommand(attackGroup, target);
+        ICommand groupAttackCommand = new GroupAttackCommand(attackGroup);
 
-        executor.ExecuteCommand(attackCommand);
-        executor.ExecuteCommand(targetCommand);
-        executor.ExecuteCommand(attackCommand);
+        executor.ExecuteCommand(groupAttackCommand);
+        executor.ExecuteCommand(groupTargetCommand);
+        executor.ExecuteCommand(groupAttackCommand);
+        executor.ExecuteCommand(groupAttackCommand);
+
     }
 }
