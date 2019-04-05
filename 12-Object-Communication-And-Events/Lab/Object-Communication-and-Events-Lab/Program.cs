@@ -14,10 +14,12 @@ public class Program
         IAttacker warrior = new Warrior("Pesho", 20, combatLogger);
         ITarget target = new Dragon("Drago", 30, 200, combatLogger);
 
-        warrior.Attack();
-        warrior.SetTarget(target);
-        warrior.Attack();
-        warrior.Attack();
-        warrior.Attack();
+        IExecutor executor = new CommandExecutor();
+        ICommand targetCommand = new TargetCommand(warrior, target);
+        ICommand attackCommand = new AttackCommand(warrior);
+
+        executor.ExecuteCommand(attackCommand);
+        executor.ExecuteCommand(targetCommand);
+        executor.ExecuteCommand(attackCommand);
     }
 }
