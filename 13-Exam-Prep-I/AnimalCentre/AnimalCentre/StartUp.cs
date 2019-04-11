@@ -14,9 +14,10 @@ namespace AnimalCentre
         {
             Hotel hotel = new Hotel();
             IAnimalFactory factory = new AnimalFactory();
+            ICommandInterpreter interpreter = new CommandInterpreter();
 
             IAnimalCentre centre = new Models.AnimalCentre(hotel, factory);
-            IEngine engine = new Engine(centre);
+            IEngine engine = new Engine(centre, interpreter);
 
             engine.Run();
         }
