@@ -6,22 +6,25 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using AnimalCentre.Core.Contracts;
 using AnimalCentre.Models.Contracts;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AnimalCentre.Core
 {
     public class Engine : IEngine
     {
-        private IAnimalCentre centre;
-        private ICommandInterpreter interpreter;
+        private IServiceProvider provider;
 
-        public Engine(IAnimalCentre centre, ICommandInterpreter interpreter)
+        public Engine(IServiceProvider provider)
         {
-            this.centre = centre;
-            this.interpreter = interpreter;
+            this.provider = provider;
         }
         public void Run()
         {
+            var commandInterpreter = provider.GetService<ICommandInterpreter>();
+            var centre = provider.GetService<IAnimalCentre>();
+
             string line = Console.ReadLine();
+
             while (line != "End")
             {
                 try
@@ -29,7 +32,7 @@ namespace AnimalCentre.Core
                     string[] commandArgs = line.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToArray();
                     string command = commandArgs[0];
 
-                    interpreter.ExecuteCommand(centre, command, commandArgs.Skip(1).ToArray());
+                    commandInterpreter.ExecuteCommand(centre, command, commandArgs.Skip(1).ToArray());
                 }
                 catch (TargetInvocationException e)
                 {
